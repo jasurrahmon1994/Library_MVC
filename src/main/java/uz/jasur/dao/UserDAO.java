@@ -40,8 +40,9 @@ public class UserDAO {
             while (resultSet.next()) {
                 User user = new User();
 
-                user.setId(resultSet.getInt("id"));
-                user.setFullName(resultSet.getString("fullName"));
+                user.setId(resultSet.getInt(1));
+                user.setFullName(resultSet.getString(2));
+                user.setBirthYear(resultSet.getInt(3));
 
                 users.add(user);
             }
@@ -51,5 +52,24 @@ public class UserDAO {
         }
 
         return users;
+    }
+
+    public User show(int id) {
+        User user = showAllUsers().stream().filter(person -> id == person.getId()).findAny().orElse(null);
+        return user;
+    }
+
+    public void save(User user) {
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("INSERT INTO users(full_name, birth_year) VALUES( ?, ?)");
+
+            preparedStatement.setString(1, user.getFullName());
+            preparedStatement.setInt(2, user.getBirthYear());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

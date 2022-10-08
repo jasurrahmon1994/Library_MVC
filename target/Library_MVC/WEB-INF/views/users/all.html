@@ -4,11 +4,30 @@
     <meta charset="UTF-8">
     <title>Show all users</title>
 </head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    div {
+        display: flex;
+        align-content: center;
+        padding: 10px 0;
+    }
+    p {
+        padding: 0 10px;
+    }
+</style>
 <body>
 
 <div th:each="user : ${users}">
+    <p>UserName: </p>
     <a th:href="@{/users/{id}(id=${user.getId()})}"
        th:text="${user.getFullName()}">user</a>
+</div>
+<div>
+    <p>    <a href="/users/new">Create new user</a> </p>
 </div>
 </body>
 </html>
